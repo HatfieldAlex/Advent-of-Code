@@ -1,0 +1,18 @@
+puzzle_data = open("puzzle_input.uff", "r")
+
+freq_reports = 0
+freq_unsafe = 0
+
+for line in puzzle_data:
+    freq_reports+=1
+    str_nums = line.strip("\n").split(" ")
+    nums = [int(str_num) for str_num in str_nums]
+    print(nums)
+    increasing = bool(nums[0] < nums[1])
+    for i in range(1, len(nums)):
+        delta = nums[i] - nums[i-1]
+        if bool(delta > 0) != increasing or abs(delta) not in set([1, 2, 3]):
+            freq_unsafe+=1
+            break
+
+print(f"{freq_reports - freq_unsafe} safe reports")
