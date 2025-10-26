@@ -1,3 +1,4 @@
+#Part 1 
 puzzle_data = open("puzzle_input.uff", "r")
 
 freq_reports = 0
@@ -16,3 +17,43 @@ for line in puzzle_data:
             break
 
 print(f"{freq_reports - freq_unsafe} safe reports")
+
+#Part 2 
+puzzle_data = open("puzzle_input.uff", "r")
+
+freq_reports = 0
+freq_unsafe = 0
+
+
+def valid_sequence(nums):
+    increasing = nums[0] < nums[1]
+    for a, b in zip(nums, nums[1:]):
+        delta = b - a
+        if (delta > 0) != increasing or abs(delta) not in {1, 2, 3}:
+            return False
+    return True
+
+
+def is_safe_with_dampener(nums):
+    # Already safe
+    if valid_sequence(nums):
+        return True
+    # Try removing one element
+    for i in range(len(nums)):
+        reduced = nums[:i] + nums[i+1:]
+        if len(reduced) >= 2 and valid_sequence(reduced):
+            return True
+    return False
+
+
+freq_reports = 0
+freq_safe = 0
+
+with open("puzzle_input.uff") as puzzle_data:
+    for line in puzzle_data:
+        nums = list(map(int, line.split()))
+        freq_reports += 1
+        if is_safe_with_dampener(nums):
+            freq_safe += 1
+
+print(f"{freq_safe} safe reports")
